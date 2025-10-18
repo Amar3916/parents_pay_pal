@@ -18,7 +18,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/parent_pay_pal', {
+mongoose.connect('process.env.DATABASE_URL', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
