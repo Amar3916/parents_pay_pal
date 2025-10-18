@@ -1,6 +1,6 @@
 // API URL configuration
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-export const AI_SERVICE_URL = import.meta.env.VITE_AI_SERVICE_URL;
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+export const AI_SERVICE_URL = import.meta.env.VITE_AI_SERVICE_URL || 'http://localhost:5002';
 
 // Authentication API calls
 export const loginUser = async (email: string, password: string) => {
