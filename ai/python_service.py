@@ -405,7 +405,7 @@ if __name__ == '__main__':
         sys.exit(1)
     
     # Run the Flask app
-    port = int(os.getenv('PYTHON_SERVICE_PORT', 5002))
+    port = int(os.getenv('PORT', 5002))
     logger.info(f"Starting Python RAG Service on port {port}")
     print("Attempting to start Flask app with Waitress...")
     try:

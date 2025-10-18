@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 class PythonRAGClient {
-  constructor(baseURL = 'http://localhost:5002') {
+  constructor(baseURL = process.env.AI_SERVICE_URL || 'http://localhost:5002') {
     this.baseURL = baseURL;
     this.client = axios.create({
       baseURL: this.baseURL,

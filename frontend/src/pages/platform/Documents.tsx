@@ -34,7 +34,7 @@ export const Documents = () => {
     setMessages([]);
     
     // Clear context on the server
-    fetch("http://localhost:5002/clear-context", {
+    fetch(`${import.meta.env.VITE_AI_SERVICE_URL || 'http://localhost:5002'}/clear-context`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
