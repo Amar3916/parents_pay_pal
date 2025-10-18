@@ -12,7 +12,7 @@ const PythonRAGClient = require('./pythonRAGClient');
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3002',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3002',
   credentials: true
 }));
 app.use(bodyParser.json());
