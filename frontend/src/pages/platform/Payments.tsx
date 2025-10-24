@@ -42,7 +42,7 @@ const Payments = () => {
         if (!token) return;
 
         // Fetch fee details
-        const feeResponse = await fetch('http://localhost:5001/api/fees', {
+        const feeResponse = await fetch('http://localhost:3001/api/fees', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ const Payments = () => {
         }
 
         // Fetch payment history
-        const paymentsResponse = await fetch('http://localhost:5001/api/payments', {
+        const paymentsResponse = await fetch('http://localhost:3001/api/payments', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ const Payments = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:5001/api/payments', {
+      const response = await fetch('http://localhost:3001/api/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

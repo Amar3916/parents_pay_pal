@@ -51,7 +51,7 @@ const Dashboard = () => {
   const fetchDocuments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5001/api/documents", {
+      const res = await fetch("http://localhost:3001/api/documents", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ const Dashboard = () => {
   const fetchFinancialData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5001/api/dashboard/financial", {
+      const res = await fetch("http://localhost:3001/api/dashboard/financial", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,7 +96,7 @@ const Dashboard = () => {
 
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:5001/api/documents/upload", {
+      const res = await fetch("http://localhost:3001/api/documents/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -77,7 +77,7 @@ const Expenses = () => {
   const fetchExpenses = async () => {
     try {
       // Use the authFetch utility for authenticated requests
-      const response = await fetch(`http://localhost:5001/api/expenses`, {
+      const response = await fetch('http://localhost:3001/api/expenses', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -110,7 +110,7 @@ const Expenses = () => {
   const fetchExpenseStats = async () => {
     try {
       // Use proper authentication headers
-      const response = await fetch(`http://localhost:5001/api/expenses/stats`, {
+      const response = await fetch('http://localhost:3001/api/expenses/stats', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -153,7 +153,7 @@ const Expenses = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5001/api/expenses', {
+      const response = await fetch('http://localhost:3001/api/expenses', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
