@@ -52,7 +52,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}})  # Enable CORS for all routes with proper configuration
+# Get CORS origin from environment variable or use wildcard as fallback
+cors_origin = os.getenv('CORS_ORIGIN', '*')
+CORS(app, resources={r"/*": {"origins": cors_origin, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}})  # Enable CORS with environment variable
 
 # Global RAG Agent instance
 rag_agent = None

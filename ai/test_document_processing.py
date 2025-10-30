@@ -80,7 +80,8 @@ def test_word_document_processing():
         try:
             with open(doc_path, 'rb') as f:
                 files = {'file': f}
-                response = requests.post('http://localhost:5002/upload', files=files)
+                api_url = os.getenv('API_URL', 'http://localhost:5000')
+                response = requests.post(f'{api_url}/upload', files=files)
                 
             if response.status_code == 200:
                 result = response.json()

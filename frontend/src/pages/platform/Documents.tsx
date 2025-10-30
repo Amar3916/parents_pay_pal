@@ -44,7 +44,7 @@ export const Documents = () => {
     
     // Cleanup on component unmount
     return () => {
-      fetch("http://localhost:5002/clear-context", {
+      fetch(`${import.meta.env.VITE_AI_SERVICE_URL}/clear-context`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export const Documents = () => {
     formData.append("sessionId", sessionId);
 
     try {
-      const response = await fetch("http://localhost:5002/upload", {
+      const response = await fetch(`${import.meta.env.VITE_AI_SERVICE_URL}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -95,7 +95,7 @@ export const Documents = () => {
       setInput("");
 
       try {
-        const response = await fetch("http://localhost:5002/chat", {
+        const response = await fetch(`${import.meta.env.VITE_AI_SERVICE_URL}/chat`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

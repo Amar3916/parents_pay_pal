@@ -75,7 +75,7 @@ const StudentDetails = () => {
         if (!token) return;
 
         // Fetch fee details
-        const feeResponse = await fetch('http://localhost:3001/api/fees', {
+        const feeResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/fees`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -88,7 +88,7 @@ const StudentDetails = () => {
         }
 
         // Fetch payment history
-        const paymentsResponse = await fetch('http://localhost:3001/api/payments', {
+        const paymentsResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/payments`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -100,7 +100,7 @@ const StudentDetails = () => {
         }
 
         // Fetch expenses
-        const expensesResponse = await fetch('http://localhost:3001/api/expenses', {
+        const expensesResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/expenses`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -143,7 +143,7 @@ const StudentDetails = () => {
       const token = localStorage.getItem('token');
       if (!token || !editedFee) return;
 
-      const response = await fetch('http://localhost:3001/api/fees/update', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/fees/update`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

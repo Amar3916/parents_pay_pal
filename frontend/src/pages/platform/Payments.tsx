@@ -9,7 +9,7 @@ import { CreditCard, Clock, CheckCircle, Plus, Banknote, Smartphone } from "luci
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-const API_URL = import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:3001";
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface Payment {
   _id: string;
