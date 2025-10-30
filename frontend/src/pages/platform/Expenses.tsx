@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Receipt, Plus, TrendingUp, PieChart, Download, Calendar, Filter } from 'lucide-react';
 import { CSVLink } from "react-csv";
 
-
+import { BACKEND_URL } from "@/utils/api";
 interface Expense {
   _id: string;
   description: string;
@@ -77,7 +77,7 @@ const Expenses = () => {
   const fetchExpenses = async () => {
     try {
       // Use the authFetch utility for authenticated requests
-      const response = await fetch('http://localhost:3001/api/expenses', {
+      const response = await fetch(`${BACKEND_URL}/api/expenses/stats`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -110,7 +110,7 @@ const Expenses = () => {
   const fetchExpenseStats = async () => {
     try {
       // Use proper authentication headers
-      const response = await fetch('http://localhost:3001/api/expenses/stats', {
+      const response = await fetch(`${BACKEND_URL}/api/expenses/stats`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -153,7 +153,7 @@ const Expenses = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/expenses', {
+      const response = await fetch(`${BACKEND_URL}/api/expenses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -388,8 +388,8 @@ const Expenses = () => {
           <CardContent>
             <div className="space-y-4">
               {expenseStats.categoryBreakdown.map((item, index) => {
-                const percentage = expenseStats.totalExpenses > 0 
-                  ? Math.round((item.total / expenseStats.totalExpenses) * 100) 
+                const percentage = expenseStats.totalExpenses > 0
+                  ? Math.round((item.total / expenseStats.totalExpenses) * 100)
                   : 0;
                 const colors = ['bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500', 'bg-red-500', 'bg-indigo-500'];
                 return (

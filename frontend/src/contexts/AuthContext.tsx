@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const { token, user } = data;
         setToken(token);
         setUser(user);
-        localStorage.setItem('authToken', token);
+        localStorage.setItem('token', token);
         localStorage.setItem('userData', JSON.stringify(user));
         return { success: true };
       } else {
@@ -124,7 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('userData');
   };
 

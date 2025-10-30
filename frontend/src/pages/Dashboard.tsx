@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState, useRef } from "react";
+import { BACKEND_URL } from "@/utils/api";
 
 interface Document {
   _id: string;
@@ -48,10 +49,11 @@ const Dashboard = () => {
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
   const fetchDocuments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3001/api/documents", {
+      const res = await fetch(`${BACKEND_URL}/api/documents`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +70,7 @@ const Dashboard = () => {
   const fetchFinancialData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3001/api/dashboard/financial", {
+      const res = await fetch(`${BACKEND_URL}/api/dashboard/financial`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -95,8 +97,8 @@ const Dashboard = () => {
     formData.append("document", file);
 
     try {
-      const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:3001/api/documents/upload", {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${BACKEND_URL}/api/documents/upload`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

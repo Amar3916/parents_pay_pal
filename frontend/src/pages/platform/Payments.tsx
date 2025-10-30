@@ -9,6 +9,8 @@ import { CreditCard, Clock, CheckCircle, Plus, Banknote, Smartphone } from "luci
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
+const API_URL = import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:3001";
+
 interface Payment {
   _id: string;
   description: string;
@@ -42,7 +44,7 @@ const Payments = () => {
         if (!token) return;
 
         // Fetch fee details
-        const feeResponse = await fetch('http://localhost:3001/api/fees', {
+        const feeResponse = await fetch(`${API_URL}/api/fees`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -56,7 +58,7 @@ const Payments = () => {
         }
 
         // Fetch payment history
-        const paymentsResponse = await fetch('http://localhost:3001/api/payments', {
+        const paymentsResponse = await fetch(`${API_URL}/api/payments`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -119,7 +121,7 @@ const Payments = () => {
         return;
       }
       
-      const response = await fetch('http://localhost:3001/api/payments', {
+      const response = await fetch(`${API_URL}/api/payments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
