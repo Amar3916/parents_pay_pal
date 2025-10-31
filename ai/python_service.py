@@ -102,67 +102,71 @@ def upload_document():
             # Get file extension
             file_extension = os.path.splitext(file.filename)[1].lower()
             
-            # Save the file to a temporary location
-            with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp:
-                file.save(tmp.name)
-                tmp_path = tmp.name
+            # ✅ Save file directly to /tmp to avoid NamedTemporaryFile issues on Render
+            tmp_path = os.path.join("/tmp", file.filename)
+            file.save(tmp_path)
+            logger.info(f"Saved file to {tmp_path}, size={os.path.getsize(tmp_path)} bytes")
+
+
+            # Double-check that file actually exists
+            if not os.path.exists(tmp_path):
+                return jsonify({"error": f"File not saved properly: {tmp_path}"}), 500
+
+            file_content = ""
             
-            try:
-                file_content = ""
-                
-                # Process based on file type
-                if file_extension == '.txt':
-                    # Text file
+            # Process based on file type
+            if file_extension == '.txt':
+                with open(tmp_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    file_content = f.read()
+
+            elif file_extension == '.docx':
+                if Document is None:
+                    file_content = "Word document processing not available (python-docx not installed)"
+                else:
+                    try:
+                        doc = Document(tmp_path)
+                        file_content = '\n'.join([p.text for p in doc.paragraphs])
+                    except Exception as docx_error:
+                        logger.error(f"Failed to read .docx file: {docx_error}")
+                        return jsonify({"error": f"Failed to read Word file: {str(docx_error)}"}), 500
+
+            elif file_extension in ['.jpg', '.jpeg', '.png', '.bmp', '.tiff']:
+                if Image is None or pytesseract is None:
+                    file_content = "OCR processing not available (PIL or pytesseract not installed)"
+                else:
+                    try:
+                        image = Image.open(tmp_path)
+                        file_content = pytesseract.image_to_string(image)
+                        if not file_content.strip():
+                            file_content = "No text found in image"
+                    except Exception as ocr_error:
+                        logger.error(f"OCR processing failed: {ocr_error}")
+                        file_content = f"OCR processing failed: {str(ocr_error)}"
+
+            else:
+                try:
                     with open(tmp_path, 'r', encoding='utf-8', errors='ignore') as f:
                         file_content = f.read()
-                
-                elif file_extension == '.docx':
-                    # Word document
-                    if Document is None:
-                        file_content = "Word document processing not available (python-docx not installed)"
-                    else:
-                        doc = Document(tmp_path)
-                        file_content = '\n'.join([paragraph.text for paragraph in doc.paragraphs])
-                
-                elif file_extension in ['.jpg', '.jpeg', '.png', '.bmp', '.tiff']:
-                    # Image file - use OCR
-                    if Image is None or pytesseract is None:
-                        file_content = "OCR processing not available (PIL or pytesseract not installed)"
-                    else:
-                        try:
-                            image = Image.open(tmp_path)
-                            file_content = pytesseract.image_to_string(image)
-                            if not file_content.strip():
-                                file_content = "No text found in image"
-                        except Exception as ocr_error:
-                            file_content = f"OCR processing failed: {str(ocr_error)}"
-                
-                else:
-                    # Try to read as text file for other extensions
-                    try:
-                        with open(tmp_path, 'r', encoding='utf-8', errors='ignore') as f:
-                            file_content = f.read()
-                    except:
-                        return jsonify({"error": f"Unsupported file type: {file_extension}"}), 400
+                except:
+                    return jsonify({"error": f"Unsupported file type: {file_extension}"}), 400
 
-                # Generate a summary
-                summary = rag_agent.summarize_text(file_content)
-                
-                # Store the content for chat
-                rag_agent.last_document_content = file_content
+            # ✅ Clean up temporary file
+            os.remove(tmp_path)
 
-                return jsonify({
-                    "summary": summary,
-                    "file_type": file_extension,
-                    "content_length": len(file_content)
-                })
-            finally:
-                # Clean up the temporary file
-                os.remove(tmp_path)
+            # Generate summary
+            summary = rag_agent.summarize_text(file_content)
+            rag_agent.last_document_content = file_content
+
+            return jsonify({
+                "summary": summary,
+                "file_type": file_extension,
+                "content_length": len(file_content)
+            })
     except Exception as e:
         logger.error(f"Error in document upload: {str(e)}")
         logger.error(traceback.format_exc())
         return jsonify({"error": f"Upload failed: {str(e)}"}), 500
+
 
 @app.route('/chat', methods=['POST'])
 def chat_with_document():
