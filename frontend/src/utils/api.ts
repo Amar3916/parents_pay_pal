@@ -2,6 +2,8 @@
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const AI_SERVICE_URL = import.meta.env.VITE_AI_SERVICE_URL;
 
+console.log('Using Backend URL:', BACKEND_URL);
+
 // Authentication API calls
 export const loginUser = async (email: string, password: string) => {
   const response = await fetch(`${BACKEND_URL}/login`, {
